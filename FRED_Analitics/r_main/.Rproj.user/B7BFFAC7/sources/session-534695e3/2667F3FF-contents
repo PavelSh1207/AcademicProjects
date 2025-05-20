@@ -1,0 +1,90 @@
+# Install and load required libraries
+#install.packages("fredr")
+#install.packages("writexl")
+#install.packages("openxlsx")
+library(openxlsx)
+library(fredr)
+library(writexl)
+
+# Define a custom function to write data to Excel
+write_to_excel <- function(data, name) {
+  write_xlsx(data, path = paste0(name, ".xlsx"))
+}
+
+# Function to load data from FRED
+load_data <- function(variables) {
+  data_start <- "2010-01-01"
+  data_end <- "2022-01-01"
+  
+  # Set API key for FRED
+  key <- "8d569db4341475c8864ad88497f2059d"
+  fredr_set_key(key)
+  
+  # Fetch and write payroll data
+  payrolle <- fredr(series_id = "PAYEMS", 
+                    frequency = "m", 
+                    units = "chg", 
+                    observation_start = as.Date(data_start),
+                    observation_end = as.Date(data_end)
+  )
+  write_to_excel(payrolle, "payroll_data")
+  
+  # Fetch and write other data series
+  adp_employment <- fredr(series_id = "NPPTTL", 
+                          frequency = "m", 
+                          units = "chg", 
+                          observation_start = as.Date(data_start),
+                          observation_end = as.Date(data_end)
+  )
+  write_to_excel(adp_employment, "adp_employment_data")
+  
+  initial_claims <- fredr(series_id = "ICSA", 
+                          frequency = "m", 
+                          units = "chg", 
+                          observation_start = as.Date(data_start),
+                          observation_end = as.Date(data_end)
+  )
+  write_to_excel(initial_claims, "initial_claims_data")
+  
+  continuous_claims <- fredr(series_id = "CCSA", 
+                             frequency = "m", 
+                             units = "chg", 
+                             observation_start = as.Date(data_start),
+                             observation_end = as.Date(data_end)
+  )
+  write_to_excel(continuous_claims, "continuous_claims_data")
+  
+  date <- c(payrolle$date)
+  pay <- c(payrolle$value)
+  adp <- c(adp_employment$value)
+  init_claims <- c(initial_claims$value)
+  con_claims <- c(continuous_claims$value)
+  
+  if (length(pay) == length(adp) & length(adp) == length(init_claims) & length(init_claims) == length(con_claims & length(date) == length(con_claims))) {
+    print("TRUE")
+      general_data <- data.frame(
+        date = date,
+        pay = pay,
+        adp = adp,
+        init_claims = init_claims,
+        con_claims = con_claims
+  )
+  print(general_data)
+  write_to_excel(general_data, "d:\\Kozminski\\KozminskiProjects\\zd_II\\r_main\\general_data")
+
+  } else {
+    print("FALSE")
+  }
+
+  return (data)
+}
+
+models<- function(data){
+
+data_func <- data
+print(data_func)
+
+}
+# Load data
+data <- load_data()
+models(data)

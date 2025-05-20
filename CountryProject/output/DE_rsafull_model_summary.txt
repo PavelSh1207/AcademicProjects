@@ -1,0 +1,14 @@
+Series: ts_data 
+Regression with ARIMA(5,0,0) errors 
+
+Coefficients:
+         ar1      ar2     ar3      ar4      ar5    xreg
+      0.6001  -0.3474  0.0035  -0.0404  -0.1854  0.0285
+s.e.  0.0765   0.0895  0.0935   0.0893   0.0759  0.1541
+
+sigma^2 = 3.742:  log likelihood = -338.24
+AIC=690.48   AICc=691.2   BIC=712.18
+
+Training set error measures:
+                        ME     RMSE     MAE       MPE     MAPE      MASE        ACF1
+Training set -0.0001350712 1.898643 1.18923 -579.2728 752.7101 0.6115638 -0.01240001
